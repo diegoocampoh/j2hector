@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jax-ws xmlns="http://www.netbeans.org/ns/jax-ws/1">
+  <services>
+    <service name="ClienteServicioWebService">
+      <implementation-class>ws.ClienteServicioWebService</implementation-class>
+    </service>
+    <service name="ServicioWebService">
+      <implementation-class>ws.ServicioWebService</implementation-class>
+    </service>
+    <service name="CoreBancoWebService">
+      <implementation-class>ws.CoreBancoWebService</implementation-class>
+    </service>
+    <service name="ManejadorServiciosWebService">
+      <implementation-class>ws.ManejadorServiciosWebService</implementation-class>
+    </service>
+  </services>
+  <clients/>
+</jax-ws>

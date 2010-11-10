@@ -2,6 +2,7 @@ package session;
 
 import java.util.Date;
 import javax.annotation.Resource;
+import javax.ejb.EJB;
 import javax.ejb.Schedule;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
@@ -13,10 +14,13 @@ import javax.ejb.TimerService;
 @Singleton
 @Startup
 public class TareasProgramadasSessionBean {
+    @EJB
+    private ClienteHasServicioFacade clienteHasServicioFacade;
     @Resource
     TimerService timerService;
     private Date lastAutomaticTimeout;
     private Date lastProgrammaticTimeout;
+
     
     public void setTimer(long intervalDuration) {
         System.out.println(
@@ -35,16 +39,21 @@ public class TareasProgramadasSessionBean {
         realizaDebito();
     }
 
-    @Schedule(minute = "*/1", hour = "*")
-    public void reservarDienro() {
+    @Schedule(second="*/7", minute = "*", hour = "*")
+    public void reservarDinero() {
         this.setLastAutomaticTimeout(new Date());
-        System.out.println("Evento lanzado");
-        setTimer(3000);
+        System.out.println("Evento reserva");
+
+
+
+        System.out.println(new Date());
+        setTimer(2000);
     }
 
     public void realizaDebito() {
         this.setLastAutomaticTimeout(new Date());
-        System.out.println("Evento lanzado");
+        System.out.println("Evento debito");
+        System.out.println(new Date());
     }
 
     /**

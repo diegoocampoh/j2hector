@@ -22,6 +22,7 @@ import javax.persistence.TemporalType;
 @NamedQueries({
     @NamedQuery(name = "ClienteHasServicio.findAll", query = "SELECT c FROM ClienteHasServicio c"),
     @NamedQuery(name = "ClienteHasServicio.findByClienteid", query = "SELECT c FROM ClienteHasServicio c WHERE c.clienteHasServicioPK.clienteid = :clienteid"),
+    @NamedQuery(name = "ClienteHasServicio.findByClienteidAndServicioId", query = "SELECT c FROM ClienteHasServicio c WHERE c.clienteHasServicioPK.clienteid = :clienteid AND c.clienteHasServicioPK.servicioid = :servicioid"),
     @NamedQuery(name = "ClienteHasServicio.findByServicioid", query = "SELECT c FROM ClienteHasServicio c WHERE c.clienteHasServicioPK.servicioid = :servicioid"),
     @NamedQuery(name = "ClienteHasServicio.findByMontoDebitar", query = "SELECT c FROM ClienteHasServicio c WHERE c.montoDebitar = :montoDebitar"),
     @NamedQuery(name = "ClienteHasServicio.findByFechaInicio", query = "SELECT c FROM ClienteHasServicio c WHERE c.fechaInicio = :fechaInicio"),
