@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.ViewClienteHasServicioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputText value="#{bundle.ViewClienteHasServicioLabel_montoDebitar}"/>
+                    <h:outputText value="#{clienteHasServicioController.selected.montoDebitar}" title="#{bundle.ViewClienteHasServicioTitle_montoDebitar}"/>
+                    <h:outputText value="#{bundle.ViewClienteHasServicioLabel_fechaInicio}"/>
+                    <h:outputText value="#{clienteHasServicioController.selected.fechaInicio}" title="#{bundle.ViewClienteHasServicioTitle_fechaInicio}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewClienteHasServicioLabel_fechaFin}"/>
+                    <h:outputText value="#{clienteHasServicioController.selected.fechaFin}" title="#{bundle.ViewClienteHasServicioTitle_fechaFin}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{bundle.ViewClienteHasServicioLabel_periodicidad}"/>
+                    <h:outputText value="#{clienteHasServicioController.selected.periodicidad}" title="#{bundle.ViewClienteHasServicioTitle_periodicidad}"/>
+                    <h:outputText value="#{bundle.ViewClienteHasServicioLabel_servicio}"/>
+                    <h:outputText value="#{clienteHasServicioController.selected.servicio}" title="#{bundle.ViewClienteHasServicioTitle_servicio}"/>
+                    <h:outputText value="#{bundle.ViewClienteHasServicioLabel_cliente}"/>
+                    <h:outputText value="#{clienteHasServicioController.selected.cliente}" title="#{bundle.ViewClienteHasServicioTitle_cliente}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandLink action="#{clienteHasServicioController.destroyAndView}" value="#{bundle.ViewClienteHasServicioDestroyLink}"/>
+                <br />
+                <br />
+                <h:commandLink action="Edit" value="#{bundle.ViewClienteHasServicioEditLink}"/>
+                <br />
+                <h:commandLink action="#{clienteHasServicioController.prepareCreate}" value="#{bundle.ViewClienteHasServicioCreateLink}" />
+                <br />
+                <h:commandLink action="#{clienteHasServicioController.prepareList}" value="#{bundle.ViewClienteHasServicioShowAllLink}"/>
+                <br />
+                <br />
+                <h:commandLink value="#{bundle.ViewClienteHasServicioIndexLink}" action="/index" immediate="true" />
+
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

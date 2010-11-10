@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <ui:composition template="/template.xhtml">
+        <ui:define name="title">
+            <h:outputText value="#{bundle.EditServicioTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="body">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2">
+                    <h:outputLabel value="#{bundle.EditServicioLabel_id}" for="id" />
+                    <h:inputText id="id" value="#{servicioController.selected.id}" title="#{bundle.EditServicioTitle_id}" required="true" requiredMessage="#{bundle.EditServicioRequiredMessage_id}"/>
+                    <h:outputLabel value="#{bundle.EditServicioLabel_nombre}" for="nombre" />
+                    <h:inputText id="nombre" value="#{servicioController.selected.nombre}" title="#{bundle.EditServicioTitle_nombre}" />
+                </h:panelGrid>
+                <h:commandLink action="#{servicioController.update}" value="#{bundle.EditServicioSaveLink}"/>
+                <br />
+                <br />
+                <h:commandLink action="View" value="#{bundle.EditServicioViewLink}" immediate="true"/>
+                <br />
+                <h:commandLink action="#{servicioController.prepareList}" value="#{bundle.EditServicioShowAllLink}" immediate="true"/>
+                <br />
+                <br />
+                <h:commandLink value="#{bundle.EditServicioIndexLink}" action="/index" immediate="true" />
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
