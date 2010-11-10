@@ -80,5 +80,5 @@ public class CoreBancoWebService {
        return null;
     }
 
-    
+
 }
