@@ -5,6 +5,7 @@
 
 package session;
 
+import collection.util.JsfUtil;
 import entities.ClienteHasServicio;
 import java.util.Date;
 import java.util.List;
@@ -32,12 +33,13 @@ public class ClienteHasServicioFacade extends AbstractFacade<ClienteHasServicio>
     }
 
     public List<ClienteHasServicio> getClientesHasServiciosADebitarHoy(){
-        return getClientesHasServiciosADebitar(new Date());
+        return getClientesHasServiciosADebitar(JsfUtil.fechaInicioHoy(),JsfUtil.fechaFinHoy());
     }
 
-    public List<ClienteHasServicio> getClientesHasServiciosADebitar(Date date){
-        Query nq = em.createNamedQuery("ClienteHasServicio.findByFechaInicio");
-        nq.setParameter("fechaInicio", date);
+    public List<ClienteHasServicio> getClientesHasServiciosADebitar(Date fechaInicial,Date fechaFinal){
+        Query nq = em.createNamedQuery("ClienteHasServicio.findByFechaHoy");
+        nq.setParameter("fechaInicio", fechaInicial);
+        nq.setParameter("fechaFin", fechaFinal);
         return nq.getResultList();
     }
 

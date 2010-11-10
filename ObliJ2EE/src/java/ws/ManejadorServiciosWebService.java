@@ -28,6 +28,17 @@ public class ManejadorServiciosWebService {
         return toReturn;
     }
 
+    /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "getSaldo")
+    public Double getSaldo(@WebParam(name = "idServicio")
+    Integer idServicio, @WebParam(name = "idUsuario")
+    Integer usuarioId) {
+        return calcularGasto(mapUserId(usuarioId));
+
+    }
+
     private Double calcularGasto(Integer usuarioId) {
         Random rand = new Random();
         int min = 300;

@@ -6,13 +6,15 @@
 package ws;
 
 import entities.Cliente;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 import javax.ejb.EJB;
 import javax.jws.Oneway;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.ejb.Stateless;
 import session.ClienteFacade;
 
 /**
@@ -24,6 +26,22 @@ public class CoreBancoWebService {
     @EJB
     private ClienteFacade ejbRef;// Add business logic below. (Right-click in editor and choose
     // "Insert Code > Add Web Service Operation")
+
+    HashMap<Integer, Double> saldosClientes = new HashMap<Integer,Double>();
+    HashMap<Integer, Boolean> resrvasConfirmadas = new HashMap<Integer,Boolean>();
+
+    public HashMap<Integer, Double> getSaldosClientes() {
+        saldosClientes.put(1,50002.0);
+        saldosClientes.put(2,2736.0);
+        saldosClientes.put(3,283782.0);
+        saldosClientes.put(4,92840.0);
+        saldosClientes.put(5,762619.0);
+        saldosClientes.put(6,0029378.0);
+
+        return saldosClientes;
+    }
+
+
 
     @WebMethod(operationName = "create")
     @Oneway
@@ -68,16 +86,36 @@ public class CoreBancoWebService {
         return ejbRef.count();
     }
 
+
+    public Double getSaldoById(Integer id) throws Exception {
+        Random rand = new Random();
+        int min = 300;
+        int max = 1000;
+        Integer num = rand.nextInt(max-min+1)+min;
+        return new Double(num.doubleValue());
+    }
+
     /**
      * Web service operation
      */
-    @WebMethod(operationName = "getSaldoById")
-    public Double getSaldoById(@WebParam(name = "id")
-    Integer id) throws Exception {
-       Cliente cliente =  this.ejbRef.findById(id);
-       if(cliente!=null) return cliente.getSaldoCuenta();
-       return null;
+    @WebMethod(operationName = "reservar")
+    public Integer reservar(@WebParam(name = "usuarioId")
+    Integer usuarioId, @WebParam(name = "monto")
+    Double monto) {
+        Double montoDisponible = getSaldosClientes().get(usuarioId);
+        if ((montoDisponible)!= null & montoDisponible>monto){
+            montoDisponible -= monto;
+            getSaldosClientes().put(usuarioId,montoDisponible);
+            Long l = new Date().getTime();
+            Integer numeroReserva = (l.intValue());
+            this.resrvasConfirmadas.put(numeroReserva, Boolean.FALSE);
+            return numeroReserva;
+        }
+        return -1;
     }
+
+    
+
 
 
 }
