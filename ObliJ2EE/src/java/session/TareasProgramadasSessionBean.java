@@ -4,7 +4,9 @@ import entities.Cliente;
 import entities.ClienteHasServicio;
 import entities.Debito;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -56,11 +58,11 @@ public class TareasProgramadasSessionBean {
 
     @Schedule(second="*/7", minute = "*", hour = "*")
     public void reservarDinero() {
-        Date currentExecutionTime = new Date();
-        this.setLastAutomaticTimeout(currentExecutionTime);
+
+        this.setLastAutomaticTimeout(new Date());
         System.out.println("Evento reserva");
 
-        reservarDineroImpl(this.clienteHasServicioFacade.getClientesHasServiciosADebitarHoy(),currentExecutionTime);
+        reservarDineroImpl(this.clienteHasServicioFacade.getClientesHasServiciosADebitarHoy());
 
         System.out.println(new Date());
         setTimer(2000);
@@ -108,17 +110,31 @@ public class TareasProgramadasSessionBean {
         this.lastAutomaticTimeout = lastAutomaticTimeout;
     }
 
-    private void reservarDineroImpl(List<ClienteHasServicio> clientesHasServiciosADebitarHoy,Date fechaActual) {
-        List<Integer> listaIds = new ArrayList<Integer>();
-        Map<Integer, Cliente> mapaUsuarios = new HashMap<Integer, Cliente>();
-        Map<Integer, Double> aPagarCliente = new HashMap<Integer, Double>();
+    private void reservarDineroImpl(List<ClienteHasServicio> clientesHasServiciosADebitarHoy) {
 
-        for (ClienteHasServicio clienteHasServicio : clientesHasServiciosADebitarHoy) {
+        for (int i = 0; i < clientesHasServiciosADebitarHoy.size(); i++) {
+            ClienteHasServicio clienteHasServicio = clientesHasServiciosADebitarHoy.get(i);
+
+            //Obtenemos monto a pagar por servicio
             Double montoActualDeServicio = manejadorServiciosWebService.getSaldo(clienteHasServicio.getServicio().getId(), clienteHasServicio.getCliente().getId());
+
+            //realizamos la reserva, si retorna -1 es porque no se puede hacer
             Integer reservaId = coreWebService.reservar(clienteHasServicio.getCliente().getId(), montoActualDeServicio);
-            Debito reservaDebito = new Debito(Integer.SIZE, clienteHasServicio.getCliente().getId(), clienteHasServicio.getServicio().getId());   
-            reservaDebito.setConfirmado(Boolean.FALSE); 
+            if (reservaId == -1) break;
+
+            //Creamos el debito y lo almacenamos
+            Debito reservaDebito = new Debito(reservaId, clienteHasServicio.getCliente().getId(), clienteHasServicio.getServicio().getId());
+            reservaDebito.setConfirmado(Boolean.FALSE);
+            reservaDebito.setMontoDebitado(montoActualDeServicio.toString());
+
+            //Actualizamos la fecha inicio del clienteHasServicio, para que se vuelva a ejecutar en un futuro
+            Calendar cal = new GregorianCalendar();
+            cal.setTime(clienteHasServicio.getFechaInicio());
+            cal.add(Calendar.DAY_OF_MONTH, clienteHasServicio.getPeriodicidad().intValue());
+            clienteHasServicio.setFechaInicio(cal.getTime());
+
             debitoFacade.create(reservaDebito);
+            clienteHasServicioFacade.edit(clienteHasServicio);
         }
     }
 }
