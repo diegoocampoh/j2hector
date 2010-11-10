@@ -6,9 +6,11 @@
 package session;
 
 import entities.Cliente;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
 /**
  *
@@ -25,6 +27,12 @@ public class ClienteFacade extends AbstractFacade<Cliente> {
 
     public ClienteFacade() {
         super(Cliente.class);
+    }
+
+     public Cliente findById(Integer id) {
+        Query nq = em.createNamedQuery("Cliente.findById");
+        nq.setParameter("id", id);
+        return (Cliente)nq.getResultList().get(0);
     }
 
 }
