@@ -20,7 +20,6 @@ import session.ClienteFacade;
  * @author cursoj2ee
  */
 @WebService()
-@Stateless()
 public class CoreBancoWebService {
     @EJB
     private ClienteFacade ejbRef;// Add business logic below. (Right-click in editor and choose
