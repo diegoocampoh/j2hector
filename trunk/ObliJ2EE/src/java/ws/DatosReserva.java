@@ -23,6 +23,6 @@ public class DatosReserva {
 
     public DatosReserva(Boolean confirmado, Double montoReservado) {
         this.confirmado = confirmado;
-        this.montoReservado = montoReservado;
+        this.montoReservado = montoReservado; 
     }
 }
