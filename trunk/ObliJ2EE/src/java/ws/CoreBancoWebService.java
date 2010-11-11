@@ -125,6 +125,4 @@ public class CoreBancoWebService {
         saldosClientes.remove(id);
         saldosClientes.put(id, saldo+saldoReservado);
     }
-
-
 }
