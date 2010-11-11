@@ -94,9 +94,10 @@ public class JsfUtil {
     public static java.util.Date fechaFinHoy() {
         Calendar cal = new GregorianCalendar();
         cal.setTime(new Timestamp(new Date().getTime()));
-        cal.set(Calendar.HOUR_OF_DAY,23);
-        cal.set(Calendar.MINUTE, 59);
-        cal.set(Calendar.SECOND, 59);
+        cal.set(Calendar.HOUR_OF_DAY,0);
+        cal.set(Calendar.MINUTE, 0);
+        cal.set(Calendar.SECOND, 0);
+        cal.add(Calendar.DAY_OF_MONTH, 1);
         return new java.util.Date(cal.getTime().getTime());
     }
 }

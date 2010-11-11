@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/ObliJ2EE/ClienteServicioWebServiceService?wsdl" uri="wsdl/localhost_8080/ObliJ2EE/ClienteServicioWebServiceService.wsdl"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/ClienteServicioWebServiceService?xsd=1" uri="wsdl/localhost_8080/ObliJ2EE/ClienteServicioWebServiceService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/ServicioWebServiceService?wsdl" uri="wsdl/localhost_8080/ObliJ2EE/ServicioWebServiceService.wsdl"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/ServicioWebServiceService?xsd=1" uri="wsdl/localhost_8080/ObliJ2EE/ServicioWebServiceService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/CoreBancoWebServiceService?wsdl" uri="wsdl/localhost_8080/ObliJ2EE/CoreBancoWebServiceService.wsdl"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/CoreBancoWebServiceService?xsd=1" uri="wsdl/localhost_8080/ObliJ2EE/CoreBancoWebServiceService.xsd_1.xsd"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/ServiciosManagerWebServiceService?wsdl" uri="wsdl/localhost_8080/ObliJ2EE/ServiciosManagerWebServiceService.wsdl"/>
+    <system systemId="http://localhost:8080/ObliJ2EE/ServiciosManagerWebServiceService?xsd=1" uri="wsdl/localhost_8080/ObliJ2EE/ServiciosManagerWebServiceService.xsd_1.xsd"/>
+</catalog>
