@@ -36,7 +36,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "Debito.findByClienteid", query = "SELECT d FROM Debito d WHERE d.clienteid = :clienteid"),
     @NamedQuery(name = "Debito.findByServicioid", query = "SELECT d FROM Debito d WHERE d.servicioid = :servicioid"),
     @NamedQuery(name = "Debito.findByConfirmado", query = "SELECT d FROM Debito d WHERE d.confirmado = :confirmado"),
-    @NamedQuery(name = "Debito.findByNoConfirmadoToday", query = "SELECT d FROM Debito d WHERE d.confirmado = :confirmado AND WHERE d.fechaEjecucion = :fechaEjecucion"),
+    @NamedQuery(name = "Debito.findByNoConfirmadoToday", query = "SELECT d FROM Debito d WHERE d.confirmado = :confirmado AND d.fechaEjecucion = :fechaEjecucion"),
     @NamedQuery(name = "Debito.findByResultado", query = "SELECT d FROM Debito d WHERE d.resultado = :resultado")})
 public class Debito implements Serializable {
     private static final long serialVersionUID = 1L;

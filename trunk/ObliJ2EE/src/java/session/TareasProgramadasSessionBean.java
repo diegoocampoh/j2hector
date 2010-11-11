@@ -1,15 +1,11 @@
 package session;
 
-import entities.Cliente;
 import entities.ClienteHasServicio;
 import entities.Debito;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
@@ -22,12 +18,20 @@ import javax.ejb.Timer;
 import javax.ejb.TimerService;
 import javax.xml.ws.WebServiceRef;
 import ws.CoreBancoWebService;
-import ws.ManejadorServiciosWebService;
+import ws.ServiciosManagerWebService;
+import ws.client.core.CoreBancoWebServiceService;
+import ws.client.core.Exception_Exception;
+import ws.client.servicioManager.ServiciosManagerWebServiceService;
 
 
 @Singleton
 @Startup
 public class TareasProgramadasSessionBean {
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/ObliJ2EE/ServiciosManagerWebServiceService.wsdl")
+    private ServiciosManagerWebServiceService service_1;
+    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/ObliJ2EE/CoreBancoWebServiceService.wsdl")
+    private CoreBancoWebServiceService service;
+
     @EJB
     private ClienteHasServicioFacade clienteHasServicioFacade;
     @EJB
@@ -36,11 +40,7 @@ public class TareasProgramadasSessionBean {
     TimerService timerService;
     private Date lastAutomaticTimeout;
     private Date lastProgrammaticTimeout;
-    @WebServiceRef public ManejadorServiciosWebService manejadorServiciosWebServices;
-    @WebServiceRef public CoreBancoWebService coreBancoWebService;
 
-
-    
     public void setTimer(long intervalDuration) {
         System.out.println(
                 "Seteando el tiempo " + intervalDuration
@@ -78,14 +78,14 @@ public class TareasProgramadasSessionBean {
         for(Debito debito : debitosRealizar)
         {
             //Realizar el pago contra el servicio
-            sePago = manejadorServiciosWebServices.pagar(debito.getServicioid(), debito.getClienteid(), new Double(debito.getMontoDebitado()));
+            sePago = pagar(debito.getServicioid(), debito.getClienteid(), new Double(debito.getMontoDebitado()));
 
             //Realizar debito contra el banco con el numero de reserva
             if(sePago)
             {
                 try {
                     //Confirmamos la reserva con numeroReservaActual
-                    if (coreBancoWebService.confirmarReserva(debito.getId())) {
+                    if (confirmarRerva(debito.getId())) {
                         debito.setConfirmado(true);
                     }
                 } catch (Exception ex) {
@@ -141,10 +141,10 @@ public class TareasProgramadasSessionBean {
             ClienteHasServicio clienteHasServicio = clientesHasServiciosADebitarHoy.get(i);
 
             //Obtenemos monto a pagar por servicio
-            Double montoActualDeServicio = manejadorServiciosWebServices.getSaldo(clienteHasServicio.getServicio().getId(), clienteHasServicio.getCliente().getId());
+            Double montoActualDeServicio = getSaldo(clienteHasServicio.getServicio().getId(), clienteHasServicio.getCliente().getId());
 
             //realizamos la reserva, si retorna -1 es porque no se puede hacer
-            Integer reservaId = coreBancoWebService.reservar(clienteHasServicio.getCliente().getId(), montoActualDeServicio);
+            Integer reservaId = reservar(clienteHasServicio.getCliente().getId(), montoActualDeServicio);
             if (reservaId == -1) break;
 
             //Creamos el debito y lo almacenamos
@@ -162,4 +162,33 @@ public class TareasProgramadasSessionBean {
             clienteHasServicioFacade.edit(clienteHasServicio);
         }
     }
+
+
+
+
+    /*
+     * WEB SERVICE OPERATIONS INVOCATIONS
+     */
+
+
+    private Integer reservar(java.lang.Integer usuarioId, java.lang.Double monto) {
+        ws.client.core.CoreBancoWebService port = service.getCoreBancoWebServicePort();
+        return port.reservar(usuarioId, monto);
+    }
+
+    private Boolean confirmarRerva(java.lang.Integer id) throws Exception_Exception {
+        ws.client.core.CoreBancoWebService port = service.getCoreBancoWebServicePort();
+        return port.confirmarRerva(id);
+    }
+    
+    private Double getSaldo(java.lang.Integer idServicio, java.lang.Integer idUsuario) {
+        ws.client.servicioManager.ServiciosManagerWebService port = service_1.getServiciosManagerWebServicePort();
+        return port.getSaldo(idServicio, idUsuario);
+    }
+
+    private Boolean pagar(java.lang.Integer servicioID, java.lang.Integer clienteID, java.lang.Double monto) {
+        ws.client.servicioManager.ServiciosManagerWebService port = service_1.getServiciosManagerWebServicePort();
+        return port.pagar(servicioID, clienteID, monto);
+    }
+
 }

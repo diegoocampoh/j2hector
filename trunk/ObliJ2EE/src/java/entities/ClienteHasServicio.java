@@ -26,7 +26,7 @@ import javax.persistence.TemporalType;
     @NamedQuery(name = "ClienteHasServicio.findByServicioid", query = "SELECT c FROM ClienteHasServicio c WHERE c.clienteHasServicioPK.servicioid = :servicioid"),
     @NamedQuery(name = "ClienteHasServicio.findByMontoDebitar", query = "SELECT c FROM ClienteHasServicio c WHERE c.montoDebitar = :montoDebitar"),
     @NamedQuery(name = "ClienteHasServicio.findByFechaInicio", query = "SELECT c FROM ClienteHasServicio c WHERE c.fechaInicio = :fechaInicio"),
-    @NamedQuery(name = "ClienteHasServicio.findByFechaHoy", query = "SELECT c FROM ClienteHasServicio c WHERE c.fechaInicio > :fechaInicio AND c.fechaInicio < :fechaFin"),
+    @NamedQuery(name = "ClienteHasServicio.findByFechaHoy", query = "SELECT c FROM ClienteHasServicio c WHERE c.fechaInicio >= :fechaInicio AND c.fechaInicio <= :fechaFin"),
     @NamedQuery(name = "ClienteHasServicio.findByFechaFin", query = "SELECT c FROM ClienteHasServicio c WHERE c.fechaFin = :fechaFin"),
     @NamedQuery(name = "ClienteHasServicio.findByPeriodicidad", query = "SELECT c FROM ClienteHasServicio c WHERE c.periodicidad = :periodicidad")})
 public class ClienteHasServicio implements Serializable {

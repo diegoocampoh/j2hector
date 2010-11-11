@@ -1,33 +1,27 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
+
 package ws;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.Random;
-import javax.jws.Oneway;
+import javax.ejb.EJB;
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
 import javax.jws.WebService;
-import javax.ejb.Stateless;
+import session.ServicioFacade;
 
-
+/**
+ *
+ * @author cursoj2ee
+ */
 @WebService()
-@Stateless()
-public class ManejadorServiciosWebService {
+public class ServiciosManagerWebService {
+    @EJB
+    private ServicioFacade ejbRef;// Add business logic below. (Right-click in editor and choose
+    // "Insert Code > Add Web Service Operation")
 
-    /**
-     * Web service operation
-     */
-    @WebMethod(operationName = "getSaldos")
-    public java.util.Map<Integer ,Double> getSaldos(@WebParam(name = "idServicio")
-    Integer idServicio, @WebParam(name = "usuarios")
-    List<Integer> usuarios) {
-        HashMap<Integer,Double> toReturn = new HashMap<Integer, Double>();
-        for (Integer usuarioId : usuarios) {
-            toReturn.put(usuarioId,calcularGasto(mapUserId(usuarioId)));
-        }
-        return toReturn;
-    }
 
     /**
      * Web service operation
