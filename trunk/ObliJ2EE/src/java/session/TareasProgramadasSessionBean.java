@@ -90,12 +90,15 @@ public class TareasProgramadasSessionBean {
                     }
                 } catch (Exception ex) {
                     Logger.getLogger(TareasProgramadasSessionBean.class.getName()).log(Level.SEVERE, null, ex);
-                    System.out.println("No se pudo hacer la reserva");
+                    System.out.println("No se pudo hacer la reserva para cliente " + debito.getClienteid() + " en el servicio "
+                            + debito.getClienteHasServicio().getServicio().getNombre());
                 }
+            }else
+            {
+                 coreBancoWebService.liberarReserva(debito.getId());
             }
         }
-
-        System.out.println("Debitos realizados debito");
+        System.out.println("Proceso de debitos finalizado");
         System.out.println(new Date());
     }
 
