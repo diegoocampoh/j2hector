@@ -12,10 +12,7 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import session.ServicioFacade;
 
-/**
- *
- * @author cursoj2ee
- */
+
 @WebService()
 public class ServiciosManagerWebService {
     @EJB

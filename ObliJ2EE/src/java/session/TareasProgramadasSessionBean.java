@@ -19,18 +19,18 @@ import javax.ejb.TimerService;
 import javax.xml.ws.WebServiceRef;
 import ws.CoreBancoWebService;
 import ws.ServiciosManagerWebService;
-import ws.client.core.CoreBancoWebServiceService;
-import ws.client.core.Exception_Exception;
-import ws.client.servicioManager.ServiciosManagerWebServiceService;
+
 
 
 @Singleton
 @Startup
 public class TareasProgramadasSessionBean {
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/ObliJ2EE/ServiciosManagerWebServiceService.wsdl")
-    private ServiciosManagerWebServiceService service_1;
-    @WebServiceRef(wsdlLocation = "WEB-INF/wsdl/localhost_8080/ObliJ2EE/CoreBancoWebServiceService.wsdl")
-    private CoreBancoWebServiceService service;
+
+    public TareasProgramadasSessionBean() {
+    }
+    
+
+
 
     @EJB
     private ClienteHasServicioFacade clienteHasServicioFacade;
@@ -40,6 +40,10 @@ public class TareasProgramadasSessionBean {
     TimerService timerService;
     private Date lastAutomaticTimeout;
     private Date lastProgrammaticTimeout;
+
+
+    CoreBancoWebService coreBanco = new CoreBancoWebService();
+    ServiciosManagerWebService serviciosManager = new ServiciosManagerWebService();
 
     public void setTimer(long intervalDuration) {
         System.out.println(
@@ -175,23 +179,24 @@ public class TareasProgramadasSessionBean {
 
 
     private Integer reservar(java.lang.Integer usuarioId, java.lang.Double monto) {
-        ws.client.core.CoreBancoWebService port = service.getCoreBancoWebServicePort();
-        return port.reservar(usuarioId, monto);
+        return coreBanco.reservar(usuarioId, monto);
     }
 
-    private Boolean confirmarRerva(java.lang.Integer id) throws Exception_Exception {
-        ws.client.core.CoreBancoWebService port = service.getCoreBancoWebServicePort();
-        return port.confirmarRerva(id);
+    public Boolean confirmarRerva(java.lang.Integer id){
+        try {
+            return coreBanco.confirmarReserva(id);
+        } catch (Exception ex) {
+            Logger.getLogger(TareasProgramadasSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return Boolean.FALSE;
     }
     
     private Double getSaldo(java.lang.Integer idServicio, java.lang.Integer idUsuario) {
-        ws.client.servicioManager.ServiciosManagerWebService port = service_1.getServiciosManagerWebServicePort();
-        return port.getSaldo(idServicio, idUsuario);
+        return serviciosManager.getSaldo(idServicio, idUsuario);
     }
 
-    private Boolean pagar(java.lang.Integer servicioID, java.lang.Integer clienteID, java.lang.Double monto) {
-        ws.client.servicioManager.ServiciosManagerWebService port = service_1.getServiciosManagerWebServicePort();
-        return port.pagar(servicioID, clienteID, monto);
+    private Boolean pagar(java.lang.Integer servicioID, java.lang.Integer clienteID, java.lang.Double monto) {        
+        return serviciosManager.pagar(servicioID, clienteID, monto);
     }
 
 }
