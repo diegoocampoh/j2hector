@@ -1,8 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 package ws;
 
 import entities.Cliente;
@@ -17,18 +12,14 @@ import javax.jws.WebParam;
 import javax.jws.WebService;
 import session.ClienteFacade;
 
-/**
- *
- * @author cursoj2ee
- */
+
 @WebService()
 public class CoreBancoWebService {
     @EJB
-    private ClienteFacade ejbRef;// Add business logic below. (Right-click in editor and choose
-    // "Insert Code > Add Web Service Operation")
+    private ClienteFacade ejbRef;
 
     HashMap<Integer, Double> saldosClientes = new HashMap<Integer,Double>();
-    HashMap<Integer, Boolean> resrvasConfirmadas = new HashMap<Integer,Boolean>();
+    HashMap<Integer, DatosReserva> resrvasConfirmadas = new HashMap<Integer,DatosReserva>();
 
     public HashMap<Integer, Double> getSaldosClientes() {
         saldosClientes.put(1,50002.0);
@@ -40,8 +31,6 @@ public class CoreBancoWebService {
 
         return saldosClientes;
     }
-
-
 
     @WebMethod(operationName = "create")
     @Oneway
@@ -108,7 +97,7 @@ public class CoreBancoWebService {
             getSaldosClientes().put(usuarioId,montoDisponible);
             Long l = new Date().getTime();
             Integer numeroReserva = (l.intValue());
-            this.resrvasConfirmadas.put(numeroReserva, Boolean.FALSE);
+            this.resrvasConfirmadas.put(numeroReserva, new DatosReserva(Boolean.FALSE, montoDisponible));
             return numeroReserva;
         }
         return -1;
@@ -121,6 +110,20 @@ public class CoreBancoWebService {
     public Boolean confirmarReserva(@WebParam(name = "id")
     Integer id) throws Exception {
         return true;
+    }
+
+         /**
+     * Web service operation
+     */
+    @WebMethod(operationName = "liberarReserva")
+    @Oneway
+    public void liberarReserva(@WebParam(name = "id")
+    Integer id)  {
+        Double saldoReservado = resrvasConfirmadas.get(id).getMontoReservado();
+        resrvasConfirmadas.remove(id);
+        Double saldo = saldosClientes.get(id);
+        saldosClientes.remove(id);
+        saldosClientes.put(id, saldo+saldoReservado);
     }
 
 
